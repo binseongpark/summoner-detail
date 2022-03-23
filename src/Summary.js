@@ -1,11 +1,61 @@
 import styled, { css } from "styled-components";
+import React from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement);
+
+export const data = {
+  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+  datasets: [
+    {
+      label: "# of Votes",
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        "rgba(255, 99, 132, 0.2)",
+        "rgba(54, 162, 235, 0.2)",
+        "rgba(255, 206, 86, 0.2)",
+        "rgba(75, 192, 192, 0.2)",
+        "rgba(153, 102, 255, 0.2)",
+        "rgba(255, 159, 64, 0.2)",
+      ],
+      borderColor: [
+        "rgba(255, 99, 132, 1)",
+        "rgba(54, 162, 235, 1)",
+        "rgba(255, 206, 86, 1)",
+        "rgba(75, 192, 192, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 159, 64, 1)",
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
 
 export default function Summary() {
   return (
     <Wrapper>
       <Header></Header>
       <Body>
-        <div>1</div>
+        <div>
+          <ChartContainer>
+            <div>
+              <div>20전 11승 9패</div>
+              <div>
+                <Doughnut data={data} />
+              </div>
+            </div>
+            <div>
+              <div>
+                25.9 / <StyledSpan bold>15.8</StyledSpan> / 14.1
+              </div>
+              <div>
+                <StyledSpan bold fontSize="16px" color="var(--bluey-green)">3.45:1</StyledSpan>{" "}
+                <StyledSpan fontSize="16px">(58%)</StyledSpan>
+              </div>
+            </div>
+          </ChartContainer>
+        </div>
         <MostChampionContainer>
           <MostChampion>
             <div>
@@ -295,4 +345,58 @@ const LineWinRate = styled.div`
 
 const WinRateSpan = styled.span`
   color: var(--reddish);
+`;
+
+const ChartContainer = styled.div`
+  padding-left: 24px;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  & > div {
+    &:nth-of-type(1) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      & > div {
+        &:nth-of-type(2) {
+          width: 90px;
+        }
+      }
+    }
+    &:nth-of-type(2) {
+      padding-left: 35px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-family: Helvetica;
+      font-size: 11px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: var(--black);
+
+      & > div {
+        &:nth-of-type(2) {
+          padding-top: 6px;
+        }
+      }
+    }
+  }
+`;
+
+const StyledSpan = styled.span`
+  /* 크기 색 지정할수 있게 만들자 */
+  font-family: Helvetica;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "11px")};
+  font-weight: ${props => props.bold ? 'bold': 'normal'};
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: ${props => props.color ? props.color: 'var(--reddish)'};
 `;
