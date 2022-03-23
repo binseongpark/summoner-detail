@@ -50,7 +50,9 @@ export default function Summary() {
                 25.9 / <StyledSpan bold>15.8</StyledSpan> / 14.1
               </div>
               <div>
-                <StyledSpan bold fontSize="16px" color="var(--bluey-green)">3.45:1</StyledSpan>{" "}
+                <StyledSpan bold fontSize="16px" color="var(--bluey-green)">
+                  3.45:1
+                </StyledSpan>{" "}
                 <StyledSpan fontSize="16px">(58%)</StyledSpan>
               </div>
             </div>
@@ -359,6 +361,18 @@ const ChartContainer = styled.div`
       flex-direction: column;
       justify-content: center;
       & > div {
+        &:nth-of-type(1) {
+          text-align: center;
+          padding-bottom: 14px;
+          font-family: Helvetica;
+          font-size: 12px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          color: var(--brownish-grey-two);
+        }
         &:nth-of-type(2) {
           width: 90px;
         }
@@ -392,11 +406,11 @@ const StyledSpan = styled.span`
   /* 크기 색 지정할수 있게 만들자 */
   font-family: Helvetica;
   font-size: ${(props) => (props.fontSize ? props.fontSize : "11px")};
-  font-weight: ${props => props.bold ? 'bold': 'normal'};
+  font-weight: ${(props) => (props.bold ? "bold" : "normal")};
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
-  color: ${props => props.color ? props.color: 'var(--reddish)'};
+  color: ${(props) => (props.color ? props.color : "var(--reddish)")};
 `;
