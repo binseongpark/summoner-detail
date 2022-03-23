@@ -12,9 +12,31 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <span className="Text-Style-3">gogogo~</span>
+      <ProfileContainer>
+        <div>
+          <LastSeasonBadge/>
+          <LastSeasonBadge/>
+          <LastSeasonBadge/>
+          <LastSeasonBadge/>
+        </div>
+        <div>
+          <Profile />
+        </div>
+      </ProfileContainer>
     </div>
   );
 }
+
+const ProfileContainer = styled.div`
+  width: 1000px;
+  margin: 0 auto;
+  padding-top: 15px;
+
+  & > div {
+    &:nth-of-type(1) {
+      display: flex;
+    }
+  }
+`
 
 export default App;
