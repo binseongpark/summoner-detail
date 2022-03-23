@@ -191,3 +191,7 @@
     letter-spacing: -0.42px;
     color: var(--slate-grey);
   }
+
+body {
+  background-color: var(--white);
+}

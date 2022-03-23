@@ -25,7 +25,10 @@ function App() {
       </ProfileWrapper>
       <ContentWrapper>
         <ContentContainer>
-          <LeftSide>1</LeftSide>
+          <LeftSide>
+            <SoloTier></SoloTier>
+            <FreeTier></FreeTier>
+          </LeftSide>
           <RightSide>2</RightSide>
         </ContentContainer>
       </ContentWrapper>
@@ -66,5 +69,22 @@ const RightSide = styled.div`
   background-color: blue;
   width: 690px;
 `;
+
+const SoloTier = styled.div`
+  width: 300px;
+  height: 124px;
+  border-radius: 2px;
+  border: solid 1px var(--silver-three);
+  background-color: var(--white-four);
+`
+const FreeTier = styled.div`
+  width: 300px;
+  height: 98px;
+  border-radius: 2px;
+  border: solid 1px var(--silver-three);
+  background-color: var(--white-four);
+  margin-top: 8px;
+`
+
 
 export default App;
