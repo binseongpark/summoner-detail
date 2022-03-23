@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function LastSeasonBadge() {
   return <Wrapper>
-    <span className="Text-Style-6">S3<span className="Text-Style-5"> Bronze</span></span>
+    <span className="Text-Style-5">S3<span className="Text-Style-6"> Bronze</span></span>
   </Wrapper>;
 }
 
