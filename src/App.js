@@ -31,7 +31,10 @@ function App() {
             <SoloTier></SoloTier>
             <FreeTier></FreeTier>
             <WinRate>
-              <WinRateHeader></WinRateHeader>
+              <WinRateHeader>
+                <div className="active">챔피언 승률</div>
+                <div className="non-active">7일간 랭크 승률</div>
+              </WinRateHeader>
               <WinRateBody>
                 <WinRateChampion>
                   <div>
@@ -172,6 +175,20 @@ const WinRate = styled.div`
 `;
 const WinRateHeader = styled.div`
   height: 44px;
+  display: flex;
+
+  & > div {
+    width: 100%;
+    background-color: var(--white-four);
+
+    &.active {
+      border-right: solid 1px var(--silver-three);
+      background-color: initial;
+    }
+    &.non-active {
+      border-bottom: solid 1px var(--silver-three);
+    }
+  }
 `;
 const WinRateBody = styled.div``;
 const WinRateChampion = styled.div`
