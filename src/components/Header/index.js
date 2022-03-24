@@ -14,6 +14,57 @@ export default function Header() {
               <img src="/images/icon-gg.svg" />
             </button>
           </div>
+          <SearchContentContainer>
+            <SearchContent>
+              <SearchContentHeader></SearchContentHeader>
+              <SearchContetnBody>
+                <SearchContentCard>
+                  <a>
+                    <div>
+                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
+                    </div>
+                    <div>
+                      <div>bsp</div>
+                      <div>silver 1</div>
+                    </div>
+                  </a>
+                </SearchContentCard>
+                <SearchContentCard>
+                  <a>
+                    <div>
+                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
+                    </div>
+                    <div>
+                      <div>bsp</div>
+                      <div>silver 1</div>
+                    </div>
+                  </a>
+                </SearchContentCard>
+                <SearchContentCard>
+                  <a>
+                    <div>
+                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
+                    </div>
+                    <div>
+                      <div>bsp</div>
+                      <div>silver 1</div>
+                    </div>
+                  </a>
+                </SearchContentCard>
+                <SearchContentCard>
+                  <a>
+                    <div>
+                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
+                    </div>
+                    <div>
+                      <div>bsp</div>
+                      <div>silver 1</div>
+                    </div>
+                  </a>
+                </SearchContentCard>
+              </SearchContetnBody>
+            </SearchContent>
+          </SearchContentContainer>
         </SearchBar>
       </Container>
     </Wrapper>
@@ -74,6 +125,70 @@ const SearchBar = styled.div`
 
         & > img {
           width: 100%;
+        }
+      }
+    }
+  }
+`;
+
+const SearchContentContainer = styled.div`
+  position: relative;
+`;
+const SearchContent = styled.div`
+  position: absolute;
+  top: 36px;
+  right: 0px;
+  width: 260px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgb(0 0 0 / 50%) 0px 2px 4px 0px;
+`;
+
+const SearchContentHeader = styled.div``;
+const SearchContetnBody = styled.ul`
+  margin-top: 4px;
+  margin-bottom: 4px;
+`;
+const SearchContentCard = styled.li`
+  list-style: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(232, 245, 254);
+  }
+
+
+  & > a {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    height: 53px;
+    box-sizing: border-box;
+    & > div {
+      &:nth-of-type(1) {
+        width: 36px;
+        height: 36px;
+        border-radius: 45px;
+        overflow: hidden;
+        & > img {
+          width: 100%;
+        }
+      }
+      &:nth-of-type(2) {
+        padding-left: 14px;
+        & > div {
+          &:nth-of-type(1) {
+            font-size: 14px;
+            line-height: 1.43;
+            color: rgb(68, 81, 92);
+            font-family: Helvetica;
+          }
+          &:nth-of-type(2) {
+            margin-top: 2px;
+            line-height: 14px;
+            font-size: 12px;
+            color: rgb(102, 102, 102);
+            font-family: Helvetica;
+          }
         }
       }
     }
