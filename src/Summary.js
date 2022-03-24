@@ -1,5 +1,26 @@
 import styled, { css } from "styled-components";
 import React from "react";
+import {
+  PieChart,
+  Pie,
+  Legend,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  Sector,
+  Label,
+  LabelList,
+} from "recharts";
+
+const data01 = [
+  { name: "Group A", value: 400, v: 89 },
+  { name: "Group B", value: 300, v: 100 },
+  // { name: "Group C", value: 200, v: 200 },
+  // { name: "Group D", value: 200, v: 20 },
+  // { name: "Group E", value: 278, v: 40 },
+  // { name: "Group F", value: 189, v: 60 },
+];
+const colors = ["#1f8ecd", "#ee5a52"];
 
 export default function Summary() {
   return (
@@ -10,7 +31,44 @@ export default function Summary() {
           <ChartContainer>
             <div>
               <div>20전 11승 9패</div>
-              <div>
+              <div
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  position: "relative",
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                }}
+              >
+                {/* <ResponsiveContainer width="100%" height={"100%"} > */}
+                <PieChart
+                  width={90}
+                  height={90}
+                  margin={{ top: -10, left: -10, right: -10, bottom: -10 }}
+                >
+                  <Pie
+                    data={data01}
+                    dataKey="value"
+                    innerRadius="50%"
+                    isAnimationActive={false}
+                    // outerRadius="40%"
+                    // onMouseEnter={this.handleEnter}
+                    // onMouseLeave={this.handleLeave}
+                  >
+                    {data01.map((entry, index) => (
+                      <Cell
+                        key={`slice-${index}`}
+                        fill={colors[index % 10]}
+                        // fillOpacity={
+                        //   this.state.activeIndex === index ? 1 : 0.25
+                        // }
+                        fillOpacity={1}
+                      />
+                    ))}
+                    <Label value="65%" position="center" />
+                  </Pie>
+                </PieChart>
+                {/* </ResponsiveContainer> */}
               </div>
             </div>
             <div>
@@ -328,6 +386,7 @@ const ChartContainer = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
+
       & > div {
         &:nth-of-type(1) {
           text-align: center;
@@ -342,7 +401,7 @@ const ChartContainer = styled.div`
           color: var(--brownish-grey-two);
         }
         &:nth-of-type(2) {
-          width: 90px;
+          /* width: 90px; */
         }
       }
     }

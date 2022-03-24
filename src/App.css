@@ -195,3 +195,16 @@
 body {
   background-color: var(--white);
 }
+
+
+.recharts-text.recharts-label {
+  font-family: Helvetica;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--greyish-brown);
+}

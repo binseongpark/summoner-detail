@@ -7,10 +7,10 @@ export default function Profile() {
       <div>
         <p className="Text-Style-3">플레이어아이디</p>
         <p>
-          <span class="Text-Style-4">
+          <span className="Text-Style-4">
             레더 랭킹&nbsp;
-            <span class="Text-Style-5">363,499</span>
-            <span class="Text-Style-6">{'위 (상위40.7%)'}</span>
+            <span className="Text-Style-5">363,499</span>
+            <span className="Text-Style-6">{'위 (상위40.7%)'}</span>
           </span>
         </p>
       </div>
