@@ -139,6 +139,7 @@ export default function Match() {
           </Participant>
         </div>
       </ParticipantsContainer>
+      <div style={{minWidth: '30px' }} />
       <ActionContainer>
         <div>
           <img src="images/icon-viewdetail-red.png" />
@@ -154,6 +155,8 @@ const Wrapper = styled.div`
   border: solid 1px var(--pinkish-grey-two);
   background-color: var(--pinkish-grey);
   display: flex;
+  position: relative;
+  box-sizing: border-box;
 
   &:not(:nth-of-type(1)) {
     margin-top: 8px;
@@ -427,11 +430,15 @@ const ParticipantsContainer = styled.div`
 `;
 const ActionContainer = styled.div`
   width: 30px;
+  height: 96px;
   min-width: 30px;
   border: solid 1px var(--brownish-pink);
   background-color: var(--pinkish-tan);
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  box-sizing: border-box;
   & > div {
-    width: 30px;
     height: 100%;
     display: flex;
     align-items: flex-end;
