@@ -42,6 +42,10 @@ export default function Summary() {
     return ((k + a) / a).toFixed(2);
   };
 
+  const getChampionWinRate = (w, l) => {
+    return Math.ceil((w / (w + l)) * 100);
+  };
+
   const setGameSelectedIndex = (i, filterType) => {
     dispatch({
       type: actions.FILTERED_GAMES,
@@ -53,7 +57,8 @@ export default function Summary() {
   };
 
   const getWinRate = () =>  {
-    return ((summary.wins / (summary.wins + summary.losses)) * 100 ) + '%'
+    if (Object.keys(summary).length < 1) return ''
+    return Math.ceil((summary.wins / (summary.wins + summary.losses)) * 100 ) + '%'
   }
 
   return (

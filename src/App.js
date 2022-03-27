@@ -59,6 +59,14 @@ function App() {
     return filterd.length;
   };
 
+  const getGrade = (k, d, a) => {
+    return ((k + a) / a).toFixed(2);
+  };
+
+  const getWinRate = (w, l) => {
+    return Math.ceil((w / (w + l)) * 100);
+  };
+
   console.log("@@@@ filteredGames: ", appState.filteredGames);
 
   return (
@@ -98,9 +106,20 @@ function App() {
                       <span>
                         {appState.info.summoner.leagues[0].tierRank.lp} LP{" "}
                       </span>
-                      <span>/ {appState.soloGames.soloWins}승 {appState.soloGames.soloLosses}패</span>
+                      <span>
+                        / {appState.soloGames.soloWins}승{" "}
+                        {appState.soloGames.soloLosses}패
+                      </span>
                     </p>
-                    <p>승률 {Math.ceil(appState.soloGames.soloWins / appState.soloGames.games * 100)}%</p>
+                    <p>
+                      승률{" "}
+                      {Math.ceil(
+                        (appState.soloGames.soloWins /
+                          appState.soloGames.games) *
+                          100
+                      )}
+                      %
+                    </p>
                   </div>
                 </>
               ) : null}
@@ -122,9 +141,20 @@ function App() {
                       <span>
                         {appState.info.summoner.leagues[1].tierRank.lp} LP{" "}
                       </span>
-                      <span>/ {appState.freeGames.freeWins}승 {appState.freeGames.freeLosses}패</span>
+                      <span>
+                        / {appState.freeGames.freeWins}승{" "}
+                        {appState.freeGames.freeLosses}패
+                      </span>
                     </p>
-                    <p>승률 {Math.ceil(appState.freeGames.freeWins / appState.freeGames.games * 100)}%</p>
+                    <p>
+                      승률{" "}
+                      {Math.ceil(
+                        (appState.freeGames.freeWins /
+                          appState.freeGames.games) *
+                          100
+                      )}
+                      %
+                    </p>
                   </div>
                 </>
               ) : (
@@ -168,7 +198,11 @@ function App() {
                 {appState.mostSelectedIndex === 0 &&
                   mostInfo.champions.map((item, index) => {
                     return (
-                      <WinRateChampion key={index}>
+                      <WinRateChampion
+                        key={index}
+                        grade={getGrade(item.kills, item.deaths, item.assists)}
+                        winRate={getWinRate(item.wins, item.losses)}
+                      >
                         <div>
                           <img src={item.imageUrl} />
                         </div>
@@ -177,14 +211,17 @@ function App() {
                           <p className="bottom-text">CS {item.cs} (2.4)</p>
                         </div>
                         <div>
-                          <p className="top-text">2.47:1 평점</p>
+                          <p className="top-text">
+                            {getGrade(item.kills, item.deaths, item.assists)}{" "}
+                            평점
+                          </p>
                           <p className="bottom-text">
                             {item.kills} / {item.deaths} / {item.assists}
                           </p>
                         </div>
                         <div>
                           <p className="top-text">
-                            {Math.ceil((item.wins / item.games) * 100)}%
+                            {getWinRate(item.wins, item.losses)}%
                           </p>
                           <p className="bottom-text">{item.games}게임</p>
                         </div>
@@ -204,10 +241,10 @@ function App() {
                         <div>
                           {/* rechart */}
                           <div>
-                            {Math.ceil(
+                            {/* {Math.ceil(
                               (item.wins / (item.wins + item.losses)) * 100
-                            )}
-                            %
+                            )} */}
+                            {getWinRate(item.wins, item.losses)}%
                           </div>
                           <div>
                             <Graph></Graph>
@@ -484,7 +521,6 @@ const WinRateChampion = styled.div`
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: var(--brownish-grey);
   }
 
   & .bottom-text {
@@ -525,6 +561,27 @@ const WinRateChampion = styled.div`
       width: 100%;
       & > p {
         text-align: center;
+        &:nth-of-type(1) {
+          ${(props) => {
+            if (props.grade >= 5) {
+              return css`
+                color: #2daf7f;
+              `;
+            } else if (props.grade >= 4) {
+              return css`
+                color: #1f8ecd;
+              `;
+            } else if (props.grade >= 3) {
+              return css`
+                color: #e19205;
+              `;
+            } else {
+              return css`
+                color: var(--brownish-grey);
+              `;
+            }
+          }}
+        }
       }
     }
     &:nth-of-type(4) {
@@ -532,6 +589,22 @@ const WinRateChampion = styled.div`
       min-width: 70px;
       & > p {
         text-align: center;
+
+        &:nth-of-type(1) {
+          &:nth-of-type(1) {
+            ${(props) => {
+              if (props.winRate >= 60) {
+                return css`
+                  color: #c6443e;
+                `;
+              } else {
+                return css`
+                  color: var(--brownish-grey);
+                `;
+              }
+            }}
+          }
+        }
       }
     }
   }
