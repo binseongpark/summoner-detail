@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import Badge from 'components/Badge'
+
 export default function Match() {
   return (
     <Wrapper>
@@ -48,7 +50,9 @@ export default function Match() {
             1.50:1<span> 평점</span>
           </span>
         </div>
-        <div>123</div>
+        <div>
+          <Badge status="triple">트리플킬</Badge>
+        </div>
       </KdaContainer>
       <StatsContainer>
         <div>레벨8</div>

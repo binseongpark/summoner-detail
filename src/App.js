@@ -180,13 +180,33 @@ const WinRateHeader = styled.div`
   & > div {
     width: 100%;
     background-color: var(--white-four);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.active {
       border-right: solid 1px var(--silver-three);
       background-color: initial;
+      font-family: AppleSDGothicNeo;
+      font-size: 12px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: var(--brownish-grey);
     }
     &.non-active {
       border-bottom: solid 1px var(--silver-three);
+      font-family: AppleSDGothicNeo;
+      font-size: 12px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: var(--cool-grey);
     }
   }
 `;

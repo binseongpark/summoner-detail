@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 export default function Header() {
+  const [showSearchContent, setShowSearchContent] = useState(false);
+
+  const showSearchContentContainer = (b = false) => {
+    setShowSearchContent(b);
+  };
+
   return (
     <Wrapper>
       <Container>
         <SearchBar>
           <div>
-            <input className="Text-Style-7" placeholder="소환사명,챔피언…" />
+            <input
+              className="Text-Style-7"
+              placeholder="소환사명,챔피언…"
+              onFocus={() => {
+                console.log("@@@@ focus");
+                showSearchContentContainer(true)
+
+                // if (!showSearchContent) {
+                //   document.addEventListener('click', showSearchContentContainer)
+                // }
+              }}
+              onBlur={() => {
+                showSearchContentContainer(false)
+              }}
+            />
           </div>
           <div>
             <button>
               <img src="/images/icon-gg.svg" />
             </button>
           </div>
-          <SearchContentContainer>
+          <SearchContentContainer isShow={showSearchContent}>
             <SearchContent>
               <SearchContentHeader></SearchContentHeader>
               <SearchContetnBody>
@@ -133,6 +153,7 @@ const SearchBar = styled.div`
 
 const SearchContentContainer = styled.div`
   position: relative;
+  display: ${props => (props.isShow ? 'auto' : 'none')};
 `;
 const SearchContent = styled.div`
   position: absolute;
@@ -155,7 +176,6 @@ const SearchContentCard = styled.li`
   &:hover {
     background: rgb(232, 245, 254);
   }
-
 
   & > a {
     display: flex;
