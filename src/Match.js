@@ -61,7 +61,10 @@ export default function Match({ game = {} }) {
             if (index === 0) {
               if (game.stats.general.largestMultiKillString !== "")
                 return (
-                  <Badge key={index} status={game.stats.general.largestMultiKillString}>
+                  <Badge
+                    key={index}
+                    status={game.stats.general.largestMultiKillString}
+                  >
                     {game.stats.general.largestMultiKillString}
                   </Badge>
                 );
@@ -93,9 +96,11 @@ export default function Match({ game = {} }) {
           <div></div>
           <div></div>
           <div>
-            {Array.isArray(game.items) &&
-            game.items.length > 0 ? (
-              <img width={'100%'} src={game.items[game.items.length - 1].imageUrl} />
+            {Array.isArray(game.items) && game.items.length > 0 ? (
+              <img
+                width={"100%"}
+                src={game.items[game.items.length - 1].imageUrl}
+              />
             ) : null}
           </div>
         </div>
@@ -104,78 +109,55 @@ export default function Match({ game = {} }) {
           <div></div>
           <div></div>
           <div>
-            <img width={'100%'} src={game.isWin ? '/images/icon-buildblue-p.png' : '/images/icon-buildred-p.png'} />
+            <img
+              width={"100%"}
+              src={
+                game.isWin
+                  ? "/images/icon-buildblue-p.png"
+                  : "/images/icon-buildred-p.png"
+              }
+            />
           </div>
         </div>
         <div>
-          <img src={game.isWin ? 'images/icon-ward-blue.svg' : 'images/icon-ward-red.svg'} />
+          <img
+            src={
+              game.isWin
+                ? "images/icon-ward-blue.svg"
+                : "images/icon-ward-red.svg"
+            }
+          />
           <span>제어 와드 {game.stats.ward.visionWardsBought}</span>
         </div>
       </ItemsContainer>
       <ParticipantsContainer>
         <div>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
+          {Array.isArray(game.teams) &&
+            game.teams.length > 1 &&
+            game.teams[0].players.map((item, index) => {
+              return (
+                <Participant key={index}>
+                  <div>
+                    <img src={item.champion.imageUrl} />
+                  </div>
+                  <div>{item.summonerName}</div>
+                </Participant>
+              );
+            })}
         </div>
         <div>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
-          <Participant>
-            <div>
-              <img />
-            </div>
-            <div>조선빵셔틀루피</div>
-          </Participant>
+          {Array.isArray(game.teams) &&
+            game.teams.length > 1 &&
+            game.teams[1].players.map((item, index) => {
+              return (
+                <Participant key={index}>
+                  <div>
+                    <img width={"100%"} src={item.champion.imageUrl} />
+                  </div>
+                  <div>{item.summonerName}</div>
+                </Participant>
+              );
+            })}
         </div>
       </ParticipantsContainer>
       <div style={{ minWidth: "30px" }} />
@@ -514,7 +496,6 @@ const Participant = styled.div`
       width: 16px;
       height: 16px;
       background-color: black;
-      border: solid 1px #0d0819;
       box-sizing: border-box;
 
       & > img {
@@ -534,7 +515,7 @@ const Participant = styled.div`
       font-style: normal;
       line-height: normal;
       letter-spacing: -0.42px;
-      color: var(--black-two);
+      color: var(--greyish-brown);
     }
   }
 `;
