@@ -67,8 +67,6 @@ function App() {
     return Math.ceil((w / (w + l)) * 100);
   };
 
-  console.log("@@@@ filteredGames: ", appState.filteredGames);
-
   return (
     <div className="App">
       <Header />

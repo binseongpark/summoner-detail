@@ -43,7 +43,6 @@ export default function Summary() {
   const { champions, positions, summary } = matches;
 
   const getGrade = (k, d, a) => {
-    console.log("@@@@k:", k);
     if (k === undefined) return "";
     return ((k + a) / d).toFixed(2);
   };

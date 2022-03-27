@@ -29,7 +29,6 @@ export default function Header() {
               className="Text-Style-7"
               placeholder="소환사명,챔피언…"
               onFocus={() => {
-                console.log("@@@@ focus");
                 showSearchContentContainer(true);
 
                 // if (!showSearchContent) {

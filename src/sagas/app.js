@@ -5,7 +5,6 @@ import * as actions from "actions";
 export function* initFlow(payload) {
   try {
     const res = yield call(api.test.getItem);
-    console.log("@@@@ res: ", res);
 
     const app = yield select((state) => state.app);
 
@@ -50,7 +49,6 @@ export function* getSummonerRequestFlow(payload) {
     }
 
     const app = yield select((state) => state.app);
-    console.log("@@@@ app: ", app);
 
     let filteredGames = [...o.matches.games];
     o.filteredGames = filteredGames;
