@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import formatNumber from 'utils/formatNumber'
 
 export default function Profile() {
   const { appState } = useSelector((state) => {
@@ -27,7 +28,7 @@ export default function Profile() {
             레더 랭킹&nbsp;
             <span className="Text-Style-5">
               {appState.info.summoner.ladderRank &&
-                appState.info.summoner.ladderRank.rank}
+                formatNumber(appState.info.summoner.ladderRank.rank)}
             </span>
             <span className="Text-Style-6">{`위 (상위${
               appState.info.summoner.ladderRank &&
