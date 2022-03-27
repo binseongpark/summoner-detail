@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Header from "components/Header";
 import LastSeasonBadge from "components/LastSeasonBadge";
@@ -7,7 +8,32 @@ import Profile from "Profile";
 import Summary from "Summary";
 import Match from "Match";
 
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "actions";
+
 function App() {
+  const dispatch = useDispatch();
+
+  const { appState } = useSelector((state) => {
+    return {
+      appState: state.app,
+    };
+  });
+
+  useEffect(() => {
+    dispatch({
+      type: actions.INIT,
+      data: {},
+    });
+
+    dispatch({
+      type: actions.GET_SUMMONER_REQUEST,
+      data: {
+        summonerName: "bsp",
+      },
+    });
+  }, []);
+
   return (
     <div className="App">
       <Header />
@@ -110,9 +136,9 @@ function App() {
           {/* right side */}
           <RightSide>
             <Summary />
-            <Match />
-            <Match />
-            <Match />
+            {appState.matches.games.map((item, index) => (
+              <Match key={index} />
+            ))}
           </RightSide>
         </ContentContainer>
       </ContentWrapper>

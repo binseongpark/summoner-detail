@@ -1,12 +1,25 @@
-import request from 'utils/request'
+import request from "utils/request";
 
 export const test = {
-  getSummoner: ({ summonerName }) => {
+  getInfo: ({ summonerName }) => {
     return request(`https://codingtest.op.gg/api/summoner/${summonerName}`, {
-      method: 'GET'
-    })
+      method: "GET",
+    });
   },
-  getMatchDetail: '',
-  getMatches: '',
-  getMostInfo: ''
-}
+  //
+  getMatches: ({ summonerName }) => {
+    return request(`https://codingtest.op.gg/api/summoner/${summonerName}/matches`, {
+      method: "GET",
+    });
+  },
+  getMostInfo: ({ summonerName }) => {
+    return request(`https://codingtest.op.gg/api/summoner/${summonerName}/mostInfo`, {
+      method: "GET",
+    });
+  },
+  getItem: () => {
+    return request(`http://ddragon.leagueoflegends.com/cdn/10.15.1/data/ko_KR/item.json`, {
+      method: "GET",
+    });
+  },
+};
