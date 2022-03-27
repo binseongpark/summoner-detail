@@ -52,6 +52,40 @@ export function* getSummonerRequestFlow(payload) {
     const app = yield select((state) => state.app);
     console.log("@@@@ app: ", app);
 
+    let filteredGames = [ ...o.matches.games ];
+    o.filteredGames = filteredGames
+    // 솔랭, FreeTier
+
+    let solos = o.matches.games.filter(item => item.gameType === '솔랭')
+    let soloWins
+    let soloLosses
+    if (Array.isArray(solos) && solos.length > 0) {
+      soloWins = solos.filter(item => item.isWin).length
+      soloLosses = solos.filter(item => !item.isWin).length
+    }
+
+    o.soloGames = {
+      games: Array.isArray(solos) ? solos.length : 0,
+      soloWins,
+      soloLosses
+    }
+
+    let frees = o.freeGames = o.matches.games.filter(item => item.gameType === '자유 5:5 랭크')
+    let freeWins
+    let freeLosses
+
+    if (Array.isArray(frees) && frees.length > 0) {
+      freeWins = frees.filter(item => item.isWin).length
+      freeLosses = frees.filter(item => !item.isWin).length
+    }
+
+    o.freeGames = {
+      games: Array.isArray(frees) ? solos.length : 0,
+      freeWins,
+      freeLosses
+    }
+
+
     yield put({
       type: actions.GET_SUMMONER_SUCCESS,
       data: o,
@@ -61,7 +95,35 @@ export function* getSummonerRequestFlow(payload) {
   }
 }
 
+export function* filteredGamesFlow(payload) {
+  try {
+    const { filterType } = payload.data;
+
+    const app = yield select((state) => state.app);
+    const { matches } = app
+    const { games } = matches
+
+    let filteredGames = games.filter(item => {
+      if (filterType === '') return true
+
+      return item.gameType === filterType
+    })
+
+
+
+    yield put({
+      type: actions.DEFAULT_ASSIGN,
+      data: {
+        filteredGames
+      }
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export default function* watch() {
   yield takeEvery(actions.INIT, initFlow);
   yield takeEvery(actions.GET_SUMMONER_REQUEST, getSummonerRequestFlow);
+  yield takeEvery(actions.FILTERED_GAMES, filteredGamesFlow)
 }

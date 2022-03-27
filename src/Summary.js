@@ -12,6 +12,7 @@ import {
   LabelList,
 } from "recharts";
 import { useSelector, useDispatch } from "react-redux";
+import * as actions from "actions";
 
 const data01 = [
   { name: "Group A", value: 400, v: 89 },
@@ -24,6 +25,8 @@ const data01 = [
 const colors = ["#1f8ecd", "#ee5a52"];
 
 export default function Summary() {
+  const dispatch = useDispatch();
+
   const { appState } = useSelector((state) => {
     return {
       appState: state.app,
@@ -34,20 +37,39 @@ export default function Summary() {
 
   const getGrade = (k, d, a) => {
     // console.log('@@@@k:', k)
-    return ((k + a) / a).toFixed(2)
-  }
+    return ((k + a) / a).toFixed(2);
+  };
+
+  const setGameSelectedIndex = (i, filterType) => {
+    dispatch({
+      type: actions.FILTERED_GAMES,
+      data: {
+        gameSelectedIndex: i,
+        filterType,
+      },
+    });
+  };
 
   return (
     <Wrapper>
       <Header>
         <ul>
-          <HeaderMenu active>
+          <HeaderMenu
+            active={appState.gameSelectedIndex === 0}
+            onClick={() => setGameSelectedIndex(0, "")}
+          >
             <div>전체</div>
           </HeaderMenu>
-          <HeaderMenu>
+          <HeaderMenu
+            active={appState.gameSelectedIndex === 1}
+            onClick={() => setGameSelectedIndex(1, "솔랭")}
+          >
             <div>솔로게임</div>
           </HeaderMenu>
-          <HeaderMenu>
+          <HeaderMenu
+            active={appState.gameSelectedIndex === 2}
+            onClick={() => setGameSelectedIndex(2, "자유 5:5 랭크")}
+          >
             <div>자유랭크</div>
           </HeaderMenu>
         </ul>
@@ -112,7 +134,11 @@ export default function Summary() {
         </div>
         <MostChampionContainer>
           {[...Array(3)].map((item, index) => {
-            if (Array.isArray(champions) && champions.length > 0 && champions.length > index) {
+            if (
+              Array.isArray(champions) &&
+              champions.length > 0 &&
+              champions.length > index
+            ) {
               return (
                 <MostChampion key={index}>
                   <div>
@@ -121,9 +147,24 @@ export default function Summary() {
                   <div>
                     <div>{champions[index].name}</div>
                     <div>
-                      <WinRateSpan>{Math.ceil(champions[index].wins / champions[index].games * 100)}%</WinRateSpan>
-                      <span> ({champions[index].wins}승 {champions[index].losses}패)</span>
-                      <span>{getGrade(champions[index].kills, champions[index].deaths, champions[index].assists)} 평점</span>
+                      <WinRateSpan>
+                        {Math.ceil(
+                          (champions[index].wins / champions[index].games) * 100
+                        )}
+                        %
+                      </WinRateSpan>
+                      <span>
+                        {" "}
+                        ({champions[index].wins}승 {champions[index].losses}패)
+                      </span>
+                      <span>
+                        {getGrade(
+                          champions[index].kills,
+                          champions[index].deaths,
+                          champions[index].assists
+                        )}{" "}
+                        평점
+                      </span>
                     </div>
                   </div>
                 </MostChampion>
@@ -529,3 +570,4 @@ const StyledSpan = styled.span`
   text-align: center;
   color: ${(props) => (props.color ? props.color : "var(--reddish)")};
 `;
+

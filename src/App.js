@@ -51,6 +51,16 @@ function App() {
     return `${tierDivision} ${s}`;
   };
 
+  const getFilteredGames = (type) => {
+    let filterd = appState.matches.games.filter(
+      (item) => item.gameType === type
+    );
+
+    return filterd.length;
+  };
+
+  console.log("@@@@ filteredGames: ", appState.filteredGames);
+
   return (
     <div className="App">
       <Header />
@@ -82,15 +92,15 @@ function App() {
                   </div>
                   <div>
                     <p>{appState.info.summoner.leagues[0].tierRank.name}</p>
-                    <p>탑 (총 27게임)</p>
+                    <p>탑 (총 {getFilteredGames("솔랭")}게임)</p>
                     <p>{getTier(appState.info.summoner.leagues[0].tierRank)}</p>
                     <p>
                       <span>
                         {appState.info.summoner.leagues[0].tierRank.lp} LP{" "}
                       </span>
-                      <span>/ 28승 30패</span>
+                      <span>/ {appState.soloGames.soloWins}승 {appState.soloGames.soloLosses}패</span>
                     </p>
-                    <p>승률 51%</p>
+                    <p>승률 {Math.ceil(appState.soloGames.soloWins / appState.soloGames.games * 100)}%</p>
                   </div>
                 </>
               ) : null}
@@ -100,13 +110,21 @@ function App() {
               appState.info.summoner.leagues.length > 1 ? (
                 <>
                   <div>
-                    <img src="" />
+                    <img
+                      src={appState.info.summoner.leagues[1].tierRank.imageUrl}
+                    />
                   </div>
                   <div>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+                    <p>{appState.info.summoner.leagues[1].tierRank.name}</p>
+                    <p>탑 (총 {getFilteredGames("자유 5:5 랭크")}게임)</p>
+                    <p>{getTier(appState.info.summoner.leagues[1].tierRank)}</p>
+                    <p>
+                      <span>
+                        {appState.info.summoner.leagues[1].tierRank.lp} LP{" "}
+                      </span>
+                      <span>/ {appState.freeGames.freeWins}승 {appState.freeGames.freeLosses}패</span>
+                    </p>
+                    <p>승률 {Math.ceil(appState.freeGames.freeWins / appState.freeGames.games * 100)}%</p>
                   </div>
                 </>
               ) : (
@@ -114,7 +132,7 @@ function App() {
                   <div>
                     <img src="" />
                   </div>
-                  <div>
+                  <div className="unranked">
                     <p></p>
                     <p>Unranked</p>
                   </div>
@@ -204,7 +222,7 @@ function App() {
           {/* right side */}
           <RightSide>
             <Summary />
-            {appState.matches.games.map((item, index) => (
+            {appState.filteredGames.map((item, index) => (
               <Match game={item} key={index} />
             ))}
           </RightSide>
@@ -243,6 +261,7 @@ const LeftSide = styled.div`
 `;
 const RightSide = styled.div`
   width: 690px;
+  margin-bottom: 16px;
 `;
 
 const SoloTier = styled.div`
@@ -254,6 +273,7 @@ const SoloTier = styled.div`
   display: flex;
   padding: 10px 8px;
   align-items: center;
+  box-sizing: border-box;
 
   & > div {
     &:nth-of-type(1) {
@@ -325,12 +345,15 @@ const FreeTier = styled.div`
   background-color: var(--white-four);
   margin-top: 8px;
   padding: 10px 8px;
+  padding-left: 28px;
   align-items: center;
+  box-sizing: border-box;
+  display: flex;
 
   & > div {
     &:nth-of-type(1) {
-      width: 104px;
-      height: 104px;
+      width: 64px;
+      height: 64px;
       margin-right: 8px;
 
       & > img {
@@ -353,17 +376,17 @@ const FreeTier = styled.div`
           font-family: AppleSDGothicNeo;
           font-size: 12px;
           color: #353a3a;
-          padding-top: 4px;
+          padding-top: 2px;
         }
         &:nth-of-type(3) {
           font-family: Helvetica;
           font-size: 15px;
           font-weight: bold;
           color: var(--bluish);
-          padding-top: 4px;
+          padding-top: 2px;
         }
         &:nth-of-type(4) {
-          padding-top: 6px;
+          padding-top: 4px;
           & > span {
             &:nth-of-type(1) {
               font-family: Helvetica;
@@ -380,7 +403,7 @@ const FreeTier = styled.div`
           }
         }
         &:nth-of-type(5) {
-          padding-top: 3px;
+          padding-top: 1px;
           font-family: Helvetica;
           font-size: 12px;
           color: var(--cool-grey);
