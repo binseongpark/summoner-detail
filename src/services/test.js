@@ -39,4 +39,12 @@ export const test = {
       }
     );
   },
+  getSummoner: ({ summonerName }) => {
+    return request(
+      `https://www.op.gg/api/summoners/kr/autocomplete?keyword=${summonerName}`,
+      {
+        method: "GET",
+      }
+    );
+  }
 };

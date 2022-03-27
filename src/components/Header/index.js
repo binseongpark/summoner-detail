@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "actions";
+
+let timer = null;
 
 export default function Header() {
+  const dispatch = useDispatch();
+
+  const { appState } = useSelector((state) => {
+    return {
+      appState: state.app,
+    };
+  });
+
   const [showSearchContent, setShowSearchContent] = useState(false);
 
   const showSearchContentContainer = (b = false) => {
@@ -18,14 +30,26 @@ export default function Header() {
               placeholder="소환사명,챔피언…"
               onFocus={() => {
                 console.log("@@@@ focus");
-                showSearchContentContainer(true)
+                showSearchContentContainer(true);
 
                 // if (!showSearchContent) {
                 //   document.addEventListener('click', showSearchContentContainer)
                 // }
               }}
               onBlur={() => {
-                showSearchContentContainer(false)
+                showSearchContentContainer(false);
+              }}
+              onChange={(e) => {
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+                  dispatch({
+                    type: actions.SEARCH_SUMMONER_REQUEST,
+                    data: {
+                      keyword: e.target.value,
+                    },
+                  });
+                }, 300);
               }}
             />
           </div>
@@ -38,50 +62,21 @@ export default function Header() {
             <SearchContent>
               <SearchContentHeader></SearchContentHeader>
               <SearchContetnBody>
-                <SearchContentCard>
-                  <a>
-                    <div>
-                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
-                    </div>
-                    <div>
-                      <div>bsp</div>
-                      <div>silver 1</div>
-                    </div>
-                  </a>
-                </SearchContentCard>
-                <SearchContentCard>
-                  <a>
-                    <div>
-                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
-                    </div>
-                    <div>
-                      <div>bsp</div>
-                      <div>silver 1</div>
-                    </div>
-                  </a>
-                </SearchContentCard>
-                <SearchContentCard>
-                  <a>
-                    <div>
-                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
-                    </div>
-                    <div>
-                      <div>bsp</div>
-                      <div>silver 1</div>
-                    </div>
-                  </a>
-                </SearchContentCard>
-                <SearchContentCard>
-                  <a>
-                    <div>
-                      <img src="https://opgg-static.akamaized.net/images/profile_icons/profileIcon5091.jpg?image=q_auto&image=q_auto,f_webp,w_72&v=1648102888115" />
-                    </div>
-                    <div>
-                      <div>bsp</div>
-                      <div>silver 1</div>
-                    </div>
-                  </a>
-                </SearchContentCard>
+                {appState.searchList.map((item, index) => {
+                  return (
+                    <SearchContentCard key={index}>
+                      <a>
+                        <div>
+                          <img src={item.profile_image_url} />
+                        </div>
+                        <div>
+                          <div>{item.name}</div>
+                          <div>{item.solo_tier_info.tier} {item.solo_tier_info.division}</div>
+                        </div>
+                      </a>
+                    </SearchContentCard>
+                  );
+                })}
               </SearchContetnBody>
             </SearchContent>
           </SearchContentContainer>
@@ -152,7 +147,7 @@ const SearchBar = styled.div`
 
 const SearchContentContainer = styled.div`
   position: relative;
-  display: ${props => (props.isShow ? 'auto' : 'none')};
+  display: ${(props) => (props.isShow ? "auto" : "none")};
 `;
 const SearchContent = styled.div`
   position: absolute;

@@ -25,21 +25,26 @@ export default function Summary() {
     };
   });
   const [data, setData] = useState([
-    { name: "Group A", value: 400, v: 89 },
-    { name: "Group B", value: 300, v: 100 },
+    { name: "Group A", value: 0, v: 1 },
+    { name: "Group B", value: 0, v: 2 },
   ]);
 
   useEffect(() => {
     const { matches } = appState;
     const { summary } = matches;
+
+    setData([
+      { name: "Group A", value: summary.wins, v: 1 },
+      { name: "Group B", value: summary.losses, v: 2 },
+    ]);
   }, [appState.matches]);
 
   const { matches } = appState;
   const { champions, positions, summary } = matches;
 
   const getGrade = (k, d, a) => {
-    console.log('@@@@k:', k)
-    if (k === undefined) return ''
+    console.log("@@@@k:", k);
+    if (k === undefined) return "";
     return ((k + a) / d).toFixed(2);
   };
 
@@ -53,10 +58,12 @@ export default function Summary() {
     });
   };
 
-  const getWinRate = () =>  {
-    if (Object.keys(summary).length < 1) return ''
-    return Math.ceil((summary.wins / (summary.wins + summary.losses)) * 100 ) + '%'
-  }
+  const getWinRate = () => {
+    if (Object.keys(summary).length < 1) return "";
+    return (
+      Math.ceil((summary.wins / (summary.wins + summary.losses)) * 100) + "%"
+    );
+  };
 
   return (
     <Wrapper>
@@ -129,11 +136,18 @@ export default function Summary() {
             </div>
             <div>
               <div>
-                {appState.matches.summary.kills} / <StyledSpan bold>{appState.matches.summary.deaths}</StyledSpan> / {appState.matches.summary.assists}
+                {appState.matches.summary.kills} /{" "}
+                <StyledSpan bold>{appState.matches.summary.deaths}</StyledSpan>{" "}
+                / {appState.matches.summary.assists}
               </div>
               <div>
                 <StyledSpan bold fontSize="16px" color="var(--bluey-green)">
-                  {getGrade(appState.matches.summary.kills, appState.matches.summary.deaths, appState.matches.summary.assists)}:1
+                  {getGrade(
+                    appState.matches.summary.kills,
+                    appState.matches.summary.deaths,
+                    appState.matches.summary.assists
+                  )}
+                  :1
                 </StyledSpan>{" "}
                 <StyledSpan fontSize="16px">(58%)</StyledSpan>
               </div>
