@@ -176,9 +176,15 @@ export default function Match({ game = {} }) {
         </div>
       </ParticipantsContainer>
       <div style={{ minWidth: "30px" }} />
-      <ActionContainer>
+      <ActionContainer isWin={game.isWin}>
         <div>
-          <img src="images/icon-viewdetail-red.png" />
+          {
+            game.isWin ?
+            <img src="images/icon-viewdetail-blue.png" />
+            :
+            <img src="images/icon-viewdetail-red.png" />
+          }
+
         </div>
       </ActionContainer>
     </Wrapper>
@@ -482,12 +488,25 @@ const ActionContainer = styled.div`
   width: 30px;
   height: 96px;
   min-width: 30px;
-  border: solid 1px var(--brownish-pink);
-  background-color: var(--pinkish-tan);
+
   position: absolute;
   top: -1px;
   right: -1px;
   box-sizing: border-box;
+
+  ${(props) => {
+    if (props.isWin) {
+      return css`
+        border: solid 1px var(--cool-blue);
+        background-color: var(--perrywinkle);
+      `;
+    } else {
+      return css`
+        border: solid 1px var(--brownish-pink);
+        background-color: var(--pinkish-tan);
+      `;
+    }
+  }}
   & > div {
     height: 100%;
     display: flex;

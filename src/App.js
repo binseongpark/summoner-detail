@@ -131,7 +131,7 @@ function App() {
                         </div>
                         <div>
                           {/* rechart */}
-                          <div>69%</div>
+                          <div>{Math.ceil(item.wins / (item.wins + item.losses) * 100)}%</div>
                           <div>
                             <Graph></Graph>
                           </div>
