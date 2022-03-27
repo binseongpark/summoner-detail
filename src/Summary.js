@@ -11,6 +11,7 @@ import {
   Label,
   LabelList,
 } from "recharts";
+import { useSelector, useDispatch } from "react-redux";
 
 const data01 = [
   { name: "Group A", value: 400, v: 89 },
@@ -23,9 +24,29 @@ const data01 = [
 const colors = ["#1f8ecd", "#ee5a52"];
 
 export default function Summary() {
+  const { appState } = useSelector((state) => {
+    return {
+      appState: state.app,
+    };
+  });
+  const { matches } = appState;
+  const { champions, positions, summary } = matches
+
   return (
     <Wrapper>
-      <Header></Header>
+      <Header>
+        <ul>
+          <HeaderMenu active>
+            <div>전체</div>
+          </HeaderMenu>
+          <HeaderMenu>
+            <div>솔로게임</div>
+          </HeaderMenu>
+          <HeaderMenu>
+            <div>자유랭크</div>
+          </HeaderMenu>
+        </ul>
+      </Header>
       <Body>
         <div>
           <ChartContainer>
@@ -120,38 +141,73 @@ export default function Summary() {
         </MostChampionContainer>
         <div>
           <div className="title">선호 포지션 (랭크)</div>
-          <LineWinRate>
-            <div>
-              <img src="images/icon-mostposition-jng.svg" />
-            </div>
-            <div>
-              <div>탑</div>
-              <div>
-                <span>
-                  70<span>%</span>
-                </span>
-                <span>
-                  Win Rate <span>53%</span>
-                </span>
-              </div>
-            </div>
-          </LineWinRate>
-          <LineWinRate>
-            <div>
-              <img src="images/icon-mostposition-jng.svg" />
-            </div>
-            <div>
-              <div>탑</div>
-              <div>
-                <span>
-                  70<span>%</span>
-                </span>
-                <span>
-                  Win Rate <span>53%</span>
-                </span>
-              </div>
-            </div>
-          </LineWinRate>
+          {Array.isArray(positions) &&
+            positions.map((item, index) => {
+              return (
+                <LineWinRate key={index}>
+                  <div>
+                    {
+                      item.position === 'TOP' ?
+                      <img src="images/icon-mostposition-top.svg" />
+                      :
+                      null
+                    }
+                    {
+                      item.position === 'JNG' ?
+                      <img src="images/icon-mostposition-jng.svg" />
+                      :
+                      null
+                    }
+                    {
+                      item.position === 'MID' ?
+                      <img src="images/icon-mostposition-mid.svg" />
+                      :
+                      null
+                    }
+                    {
+                      item.position === 'ADC' ?
+                      <img src="images/icon-mostposition-adc.svg" />
+                      :
+                      null
+                    }
+                    {
+                      item.position === 'SUP' ?
+                      <img src="images/icon-mostposition-sup.svg" />
+                      :
+                      null
+                    }
+                  </div>
+                  <div>
+                    <div>
+                      {
+                        (() => {
+                          switch (item.positionName) {
+                            case 'Top':
+                              return '탑'
+                            case 'Jungle':
+                              return '정글'
+                            case 'Middle':
+                              return '미드'
+                            case 'Bottom':
+                              return '원딜'
+                            case 'Support':
+                              return '서폿'
+                          }
+                        })()
+                      }
+                    </div>
+                    <div>
+                      <span>
+                        {Math.ceil(item.wins / 20 * 100)}<span>%</span>
+                      </span>
+                      <span>
+                        Win Rate <span>{Math.ceil(item.wins / item.games * 100)}%</span>
+                      </span>
+                    </div>
+                  </div>
+                </LineWinRate>
+              );
+            })}
         </div>
       </Body>
     </Wrapper>
@@ -171,7 +227,45 @@ const Header = styled.div`
   height: 36px;
   background-color: var(--white-four);
   border-bottom: solid 1px var(--silver-three);
+
+  & > ul {
+    height: 100%;
+    padding-left: 4px;
+  }
 `;
+
+const HeaderMenu = styled.li`
+  display: inline-block;
+  height: 100%;
+  margin: 0 12px;
+  font-family: NanumBarunGothicOTF;
+  font-size: 12px;
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: var(--greyish-brown);
+  cursor: pointer;
+
+  & > div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    box-sizing: border-box;
+
+    ${(props) => {
+      if (props.active) {
+        return css`
+          color: var(--bluish);
+          border-bottom: 2px solid var(--bluish);
+        `;
+      }
+    }}
+  }
+`;
+
 const Body = styled.div`
   display: flex;
   height: calc(100% - 36px);

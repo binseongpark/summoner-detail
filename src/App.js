@@ -40,11 +40,10 @@ function App() {
       <ProfileWrapper>
         <ProfileContainer>
           <div>
-            {
-              Array.isArray(appState.info.summoner.previousTiers) && appState.info.summoner.previousTiers.map((item, index) => {
-                return <LastSeasonBadge key={index} tier={item} />
-              })
-            }
+            {Array.isArray(appState.info.summoner.previousTiers) &&
+              appState.info.summoner.previousTiers.map((item, index) => {
+                return <LastSeasonBadge key={index} tier={item} />;
+              })}
           </div>
           <div>
             <Profile />
