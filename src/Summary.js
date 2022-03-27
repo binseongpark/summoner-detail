@@ -30,7 +30,12 @@ export default function Summary() {
     };
   });
   const { matches } = appState;
-  const { champions, positions, summary } = matches
+  const { champions, positions, summary } = matches;
+
+  const getGrade = (k, d, a) => {
+    // console.log('@@@@k:', k)
+    return ((k + a) / a).toFixed(2)
+  }
 
   return (
     <Wrapper>
@@ -106,38 +111,40 @@ export default function Summary() {
           </ChartContainer>
         </div>
         <MostChampionContainer>
-          <MostChampion>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/champion/Vex.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
-            <div>
-              <div>벡스</div>
-              <div>
-                <WinRateSpan>70%</WinRateSpan>
-                <span> (7승 3패)</span>
-                <span>13.01 평점</span>
-              </div>
-            </div>
-          </MostChampion>
-          <MostChampion>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/champion/Vex.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
-            <div>
-              <div>벡스</div>
-              <div>
-                <WinRateSpan>70%</WinRateSpan>
-                <span> (7승 3패)</span>
-                <span>13.01 평점</span>
-              </div>
-            </div>
-          </MostChampion>
-          <MostChampion isEmpty>
+          {[...Array(3)].map((item, index) => {
+            if (Array.isArray(champions) && champions.length > 0 && champions.length > index) {
+              return (
+                <MostChampion key={index}>
+                  <div>
+                    <img src={champions[index].imageUrl} />
+                  </div>
+                  <div>
+                    <div>{champions[index].name}</div>
+                    <div>
+                      <WinRateSpan>{Math.ceil(champions[index].wins / champions[index].games * 100)}%</WinRateSpan>
+                      <span> ({champions[index].wins}승 {champions[index].losses}패)</span>
+                      <span>{getGrade(champions[index].kills, champions[index].deaths, champions[index].assists)} 평점</span>
+                    </div>
+                  </div>
+                </MostChampion>
+              );
+            } else {
+              return (
+                <MostChampion key={index} isEmpty>
+                  <div>
+                    <img src="images/empty-champion.svg" />
+                  </div>
+                  <div>챔피언 정보가 없습니다.</div>
+                </MostChampion>
+              );
+            }
+          })}
+          {/* <MostChampion isEmpty>
             <div>
               <img src="images/empty-champion.svg" />
             </div>
             <div>챔피언 정보가 없습니다.</div>
-          </MostChampion>
+          </MostChampion> */}
         </MostChampionContainer>
         <div>
           <div className="title">선호 포지션 (랭크)</div>
@@ -146,62 +153,49 @@ export default function Summary() {
               return (
                 <LineWinRate key={index}>
                   <div>
-                    {
-                      item.position === 'TOP' ?
+                    {item.position === "TOP" ? (
                       <img src="images/icon-mostposition-top.svg" />
-                      :
-                      null
-                    }
-                    {
-                      item.position === 'JNG' ?
+                    ) : null}
+                    {item.position === "JNG" ? (
                       <img src="images/icon-mostposition-jng.svg" />
-                      :
-                      null
-                    }
-                    {
-                      item.position === 'MID' ?
+                    ) : null}
+                    {item.position === "MID" ? (
                       <img src="images/icon-mostposition-mid.svg" />
-                      :
-                      null
-                    }
-                    {
-                      item.position === 'ADC' ?
+                    ) : null}
+                    {item.position === "ADC" ? (
                       <img src="images/icon-mostposition-adc.svg" />
-                      :
-                      null
-                    }
-                    {
-                      item.position === 'SUP' ?
+                    ) : null}
+                    {item.position === "SUP" ? (
                       <img src="images/icon-mostposition-sup.svg" />
-                      :
-                      null
-                    }
+                    ) : null}
                   </div>
                   <div>
                     <div>
-                      {
-                        (() => {
-                          switch (item.positionName) {
-                            case 'Top':
-                              return '탑'
-                            case 'Jungle':
-                              return '정글'
-                            case 'Middle':
-                              return '미드'
-                            case 'Bottom':
-                              return '원딜'
-                            case 'Support':
-                              return '서폿'
-                          }
-                        })()
-                      }
+                      {(() => {
+                        switch (item.positionName) {
+                          case "Top":
+                            return "탑";
+                          case "Jungle":
+                            return "정글";
+                          case "Middle":
+                            return "미드";
+                          case "Bottom":
+                            return "원딜";
+                          case "Support":
+                            return "서폿";
+                        }
+                      })()}
                     </div>
                     <div>
                       <span>
-                        {Math.ceil(item.wins / 20 * 100)}<span>%</span>
+                        {Math.ceil((item.wins / 20) * 100)}
+                        <span>%</span>
                       </span>
                       <span>
-                        Win Rate <span>{Math.ceil(item.wins / item.games * 100)}%</span>
+                        Win Rate{" "}
+                        <span>
+                          {Math.ceil((item.wins / item.games) * 100)}%
+                        </span>
                       </span>
                     </div>
                   </div>
