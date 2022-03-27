@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -14,14 +14,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "actions";
 
-const data01 = [
-  { name: "Group A", value: 400, v: 89 },
-  { name: "Group B", value: 300, v: 100 },
-  // { name: "Group C", value: 200, v: 200 },
-  // { name: "Group D", value: 200, v: 20 },
-  // { name: "Group E", value: 278, v: 40 },
-  // { name: "Group F", value: 189, v: 60 },
-];
 const colors = ["#1f8ecd", "#ee5a52"];
 
 export default function Summary() {
@@ -32,6 +24,16 @@ export default function Summary() {
       appState: state.app,
     };
   });
+  const [data, setData] = useState([
+    { name: "Group A", value: 400, v: 89 },
+    { name: "Group B", value: 300, v: 100 },
+  ]);
+
+  useEffect(() => {
+    const { matches } = appState;
+    const { summary } = matches;
+  }, [appState.matches]);
+
   const { matches } = appState;
   const { champions, positions, summary } = matches;
 
@@ -49,6 +51,10 @@ export default function Summary() {
       },
     });
   };
+
+  const getWinRate = () =>  {
+    return ((summary.wins / (summary.wins + summary.losses)) * 100 ) + '%'
+  }
 
   return (
     <Wrapper>
@@ -95,7 +101,7 @@ export default function Summary() {
                   margin={{ top: -10, left: -10, right: -10, bottom: -10 }}
                 >
                   <Pie
-                    data={data01}
+                    data={data}
                     dataKey="value"
                     innerRadius="50%"
                     isAnimationActive={false}
@@ -103,7 +109,7 @@ export default function Summary() {
                     // onMouseEnter={this.handleEnter}
                     // onMouseLeave={this.handleLeave}
                   >
-                    {data01.map((entry, index) => (
+                    {data.map((entry, index) => (
                       <Cell
                         key={`slice-${index}`}
                         fill={colors[index % 10]}
@@ -113,7 +119,7 @@ export default function Summary() {
                         fillOpacity={1}
                       />
                     ))}
-                    <Label value="65%" position="center" />
+                    <Label value={getWinRate()} position="center" />
                   </Pie>
                 </PieChart>
                 {/* </ResponsiveContainer> */}
@@ -121,11 +127,11 @@ export default function Summary() {
             </div>
             <div>
               <div>
-                25.9 / <StyledSpan bold>15.8</StyledSpan> / 14.1
+                {appState.matches.summary.kills} / <StyledSpan bold>{appState.matches.summary.deaths}</StyledSpan> / {appState.matches.summary.assists}
               </div>
               <div>
                 <StyledSpan bold fontSize="16px" color="var(--bluey-green)">
-                  3.45:1
+                  {((appState.matches.summary.kills + appState.matches.summary.assists) / appState.matches.summary.deaths).toFixed(2)}:1
                 </StyledSpan>{" "}
                 <StyledSpan fontSize="16px">(58%)</StyledSpan>
               </div>
@@ -570,4 +576,3 @@ const StyledSpan = styled.span`
   text-align: center;
   color: ${(props) => (props.color ? props.color : "var(--reddish)")};
 `;
-
