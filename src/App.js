@@ -45,6 +45,12 @@ function App() {
     });
   };
 
+  const getTier = (o) => {
+    const { tierDivision, shortString } = o;
+    let s = shortString.slice(-1);
+    return `${tierDivision} ${s}`;
+  };
+
   return (
     <div className="App">
       <Header />
@@ -65,8 +71,56 @@ function App() {
         <ContentContainer>
           {/* left side */}
           <LeftSide>
-            <SoloTier></SoloTier>
-            <FreeTier></FreeTier>
+            <SoloTier>
+              {Array.isArray(appState.info.summoner.leagues) &&
+              appState.info.summoner.leagues.length > 0 ? (
+                <>
+                  <div>
+                    <img
+                      src={appState.info.summoner.leagues[0].tierRank.imageUrl}
+                    />
+                  </div>
+                  <div>
+                    <p>{appState.info.summoner.leagues[0].tierRank.name}</p>
+                    <p>탑 (총 27게임)</p>
+                    <p>{getTier(appState.info.summoner.leagues[0].tierRank)}</p>
+                    <p>
+                      <span>
+                        {appState.info.summoner.leagues[0].tierRank.lp} LP{" "}
+                      </span>
+                      <span>/ 28승 30패</span>
+                    </p>
+                    <p>승률 51%</p>
+                  </div>
+                </>
+              ) : null}
+            </SoloTier>
+            <FreeTier>
+              {Array.isArray(appState.info.summoner.leagues) &&
+              appState.info.summoner.leagues.length > 1 ? (
+                <>
+                  <div>
+                    <img src="" />
+                  </div>
+                  <div>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <img src="" />
+                  </div>
+                  <div>
+                    <p></p>
+                    <p>Unranked</p>
+                  </div>
+                </>
+              )}
+            </FreeTier>
             <WinRate>
               <WinRateHeader mostSelectedIndex={appState.mostSelectedIndex}>
                 <div
@@ -131,7 +185,12 @@ function App() {
                         </div>
                         <div>
                           {/* rechart */}
-                          <div>{Math.ceil(item.wins / (item.wins + item.losses) * 100)}%</div>
+                          <div>
+                            {Math.ceil(
+                              (item.wins / (item.wins + item.losses)) * 100
+                            )}
+                            %
+                          </div>
                           <div>
                             <Graph></Graph>
                           </div>
@@ -192,6 +251,71 @@ const SoloTier = styled.div`
   border-radius: 2px;
   border: solid 1px var(--silver-three);
   background-color: var(--white-four);
+  display: flex;
+  padding: 10px 8px;
+  align-items: center;
+
+  & > div {
+    &:nth-of-type(1) {
+      width: 104px;
+      height: 104px;
+      margin-right: 8px;
+
+      & > img {
+        width: 100%;
+      }
+    }
+    &:nth-of-type(2) {
+      & > p {
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        &:nth-of-type(1) {
+          font-family: AppleSDGothicNeo;
+          font-size: 11px;
+          color: var(--cool-grey);
+        }
+        &:nth-of-type(2) {
+          font-family: AppleSDGothicNeo;
+          font-size: 12px;
+          color: #353a3a;
+          padding-top: 4px;
+        }
+        &:nth-of-type(3) {
+          font-family: Helvetica;
+          font-size: 15px;
+          font-weight: bold;
+          color: var(--bluish);
+          padding-top: 4px;
+        }
+        &:nth-of-type(4) {
+          padding-top: 6px;
+          & > span {
+            &:nth-of-type(1) {
+              font-family: Helvetica;
+              font-size: 12px;
+              font-weight: bold;
+              color: var(--gunmetal);
+            }
+            &:nth-of-type(2) {
+              font-family: Helvetica;
+              font-size: 12px;
+
+              color: var(--cool-grey);
+            }
+          }
+        }
+        &:nth-of-type(5) {
+          padding-top: 3px;
+          font-family: Helvetica;
+          font-size: 12px;
+          color: var(--cool-grey);
+        }
+      }
+    }
+  }
 `;
 const FreeTier = styled.div`
   width: 300px;
@@ -200,6 +324,70 @@ const FreeTier = styled.div`
   border: solid 1px var(--silver-three);
   background-color: var(--white-four);
   margin-top: 8px;
+  padding: 10px 8px;
+  align-items: center;
+
+  & > div {
+    &:nth-of-type(1) {
+      width: 104px;
+      height: 104px;
+      margin-right: 8px;
+
+      & > img {
+        width: 100%;
+      }
+    }
+    &:nth-of-type(2) {
+      & > p {
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        &:nth-of-type(1) {
+          font-family: AppleSDGothicNeo;
+          font-size: 11px;
+          color: var(--cool-grey);
+        }
+        &:nth-of-type(2) {
+          font-family: AppleSDGothicNeo;
+          font-size: 12px;
+          color: #353a3a;
+          padding-top: 4px;
+        }
+        &:nth-of-type(3) {
+          font-family: Helvetica;
+          font-size: 15px;
+          font-weight: bold;
+          color: var(--bluish);
+          padding-top: 4px;
+        }
+        &:nth-of-type(4) {
+          padding-top: 6px;
+          & > span {
+            &:nth-of-type(1) {
+              font-family: Helvetica;
+              font-size: 12px;
+              font-weight: bold;
+              color: var(--gunmetal);
+            }
+            &:nth-of-type(2) {
+              font-family: Helvetica;
+              font-size: 12px;
+
+              color: var(--cool-grey);
+            }
+          }
+        }
+        &:nth-of-type(5) {
+          padding-top: 3px;
+          font-family: Helvetica;
+          font-size: 12px;
+          color: var(--cool-grey);
+        }
+      }
+    }
+  }
 `;
 
 const WinRate = styled.div`

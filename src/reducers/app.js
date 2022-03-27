@@ -15,7 +15,8 @@ const initialState = {
     positions: [],
     summary: []
   },
-  mostSelectedIndex: 0
+  mostSelectedIndex: 0,
+  gameSelectedIndex: 0 //0: 전체, 1: 솔로, 2: 자유
 };
 
 export default (state = initialState, action) => {
