@@ -3,6 +3,21 @@ import styled, { css } from "styled-components";
 import Badge from "components/Badge";
 
 export default function Match({ game = {} }) {
+  const getItem = (items, index) => {
+    if (items.length === index + 1) {
+      return <div></div>;
+    }
+    if (items.length > 0 && items.length > index) {
+      return (
+        <div>
+          <img width={"100%"} src={items[index].imageUrl} />
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
   return (
     <Wrapper isWin={game.isWin}>
       <InfoContainer>
@@ -92,9 +107,9 @@ export default function Match({ game = {} }) {
       </StatsContainer>
       <ItemsContainer isWin={game.isWin}>
         <div>
-          <div></div>
-          <div></div>
-          <div></div>
+          {[...Array(3)].map((item, index) => {
+            return getItem(game.items, index);
+          })}
           <div>
             {Array.isArray(game.items) && game.items.length > 0 ? (
               <img
@@ -105,9 +120,9 @@ export default function Match({ game = {} }) {
           </div>
         </div>
         <div>
-          <div></div>
-          <div></div>
-          <div></div>
+          {[...Array(3)].map((item, index) => {
+            return getItem(game.items, index + 3);
+          })}
           <div>
             <img
               width={"100%"}
