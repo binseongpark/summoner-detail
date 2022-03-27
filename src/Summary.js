@@ -38,12 +38,9 @@ export default function Summary() {
   const { champions, positions, summary } = matches;
 
   const getGrade = (k, d, a) => {
-    // console.log('@@@@k:', k)
-    return ((k + a) / a).toFixed(2);
-  };
-
-  const getChampionWinRate = (w, l) => {
-    return Math.ceil((w / (w + l)) * 100);
+    console.log('@@@@k:', k)
+    if (k === undefined) return ''
+    return ((k + a) / d).toFixed(2);
   };
 
   const setGameSelectedIndex = (i, filterType) => {
@@ -136,7 +133,7 @@ export default function Summary() {
               </div>
               <div>
                 <StyledSpan bold fontSize="16px" color="var(--bluey-green)">
-                  {((appState.matches.summary.kills + appState.matches.summary.assists) / appState.matches.summary.deaths).toFixed(2)}:1
+                  {getGrade(appState.matches.summary.kills, appState.matches.summary.deaths, appState.matches.summary.assists)}:1
                 </StyledSpan>{" "}
                 <StyledSpan fontSize="16px">(58%)</StyledSpan>
               </div>
