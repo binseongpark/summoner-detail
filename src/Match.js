@@ -1,38 +1,42 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-import Badge from 'components/Badge'
+import Badge from "components/Badge";
 
-export default function Match() {
+export default function Match({ game = {} }) {
   return (
-    <Wrapper>
+    <Wrapper isWin={game.isWin}>
       <InfoContainer>
-        <div>솔랭</div>
+        <div>{game.gameType}</div>
         <div>
+          {/* 시간 계산해야될듯 */}
           <span>하루전</span>
         </div>
-        <div>패배</div>
+        <div>{game.isWin ? "승리" : "패배"}</div>
         <div>15분 53초</div>
       </InfoContainer>
       <ChampionContainer>
         <div>
           <Icon>
-            <img src="https://opgg-static.akamaized.net/images/lol/champion/Vex.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
+            {/* <img src="https://opgg-static.akamaized.net/images/lol/champion/Vex.png?image=q_auto,f_webp,w_auto&v=1648022284663" /> */}
+            <img src={game.champion.imageUrl} />
           </Icon>
           <Spells>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/spell/SummonerFlash.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/spell/SummonerFlash.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
+            {Array.isArray(game.spells) &&
+              game.spells.map((item, index) => (
+                <div key={index}>
+                  <img src={item.imageUrl} />
+                </div>
+              ))}
           </Spells>
           <Runes>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/spell/SummonerFlash.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
-            <div>
-              <img src="https://opgg-static.akamaized.net/images/lol/spell/SummonerFlash.png?image=q_auto,f_webp,w_auto&v=1648022284663" />
-            </div>
+            {Array.isArray(game.peak) &&
+              game.peak.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <img src={item} />
+                  </div>
+                );
+              })}
           </Runes>
         </div>
         <div>레오나</div>
@@ -143,7 +147,7 @@ export default function Match() {
           </Participant>
         </div>
       </ParticipantsContainer>
-      <div style={{minWidth: '30px' }} />
+      <div style={{ minWidth: "30px" }} />
       <ActionContainer>
         <div>
           <img src="images/icon-viewdetail-red.png" />
@@ -156,11 +160,24 @@ export default function Match() {
 const Wrapper = styled.div`
   width: 690px;
   height: 96px;
-  border: solid 1px var(--pinkish-grey-two);
-  background-color: var(--pinkish-grey);
   display: flex;
   position: relative;
   box-sizing: border-box;
+
+  ${(props) => {
+    if (props.isWin) {
+      return css`
+        border: solid 1px var(--light-grey-blue);
+        background-color: var(--light-blue-grey);
+      `;
+    } else {
+      return css`
+        border: solid 1px var(--pinkish-grey-two);
+        background-color: var(--pinkish-grey);
+      `;
+    }
+  }}
+}
 
   &:not(:nth-of-type(1)) {
     margin-top: 8px;

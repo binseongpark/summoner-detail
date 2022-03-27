@@ -137,7 +137,7 @@ function App() {
           <RightSide>
             <Summary />
             {appState.matches.games.map((item, index) => (
-              <Match key={index} />
+              <Match game={item} key={index} />
             ))}
           </RightSide>
         </ContentContainer>
