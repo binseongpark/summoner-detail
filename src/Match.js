@@ -43,11 +43,11 @@ export default function Match({ game = {} }) {
       </ChampionContainer>
       <KdaContainer>
         <div>
-          <span> 2 </span>
+          <span> {game.stats.general.kill} </span>
           <span>&nbsp;/&nbsp;</span>
-          <span> 2 </span>
+          <span> {game.stats.general.death} </span>
           <span>&nbsp;/&nbsp;</span>
-          <span> 1</span>
+          <span> {game.stats.general.assist}</span>
         </div>
         <div>
           <span>
@@ -55,12 +55,34 @@ export default function Match({ game = {} }) {
           </span>
         </div>
         <div>
-          <Badge status="triple">트리플킬</Badge>
+          {[...Array(2)].map((item, index) => {
+            if (index === 0) {
+              if (game.stats.general.largestMultiKillString !== "")
+                return (
+                  <Badge status={game.stats.general.largestMultiKillString}>
+                    {game.stats.general.largestMultiKillString}
+                  </Badge>
+                );
+            } else {
+              if (
+                game.stats.general.opScoreBadge &&
+                game.stats.general.opScoreBadge !== ""
+              ) {
+                return (
+                  <Badge status={game.stats.general.opScoreBadge}>
+                    {game.stats.general.opScoreBadge}
+                  </Badge>
+                );
+              }
+            }
+          })}
         </div>
       </KdaContainer>
       <StatsContainer>
         <div>레벨8</div>
-        <div>20 (1.3) CS</div>
+        <div>
+          {game.stats.general.cs} ({game.stats.general.csPerMin}) CS
+        </div>
         <div>킬관여 38%</div>
       </StatsContainer>
       <ItemsContainer>
@@ -177,7 +199,6 @@ const Wrapper = styled.div`
       `;
     }
   }}
-}
 
   &:not(:nth-of-type(1)) {
     margin-top: 8px;

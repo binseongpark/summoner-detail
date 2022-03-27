@@ -1,9 +1,20 @@
 import styled, { css } from "styled-components";
 
 export default function Badge({ children, status }) {
+  const getKillString = (s) => {
+    switch (s) {
+      case "Double Kill":
+        return "더블킬";
+      case "ACE":
+        return "ACE";
+      default:
+        return s;
+    }
+  };
+
   return (
     <Wrapper status={status}>
-      <div>{children}</div>
+      <div>{getKillString(children)}</div>
     </Wrapper>
   );
 }
@@ -23,9 +34,13 @@ const Wrapper = styled.div`
   color: var(--white-two);
   border-radius: 9px;
 
+  &:not(:nth-of-type(1)) {
+    margin-left: 4px;
+  }
+
   ${(props) => {
     switch (props.status) {
-      case "double":
+      case "Double Kill":
       case "triple":
       case "penta":
         return css`
@@ -38,10 +53,17 @@ const Wrapper = styled.div`
           background-color: rgb(225, 146, 5);
           border: 1px solid rgb(184, 138, 42);
         `;
-      case "ace":
+      case "ACE":
         return css`
           border: solid 1px var(--warm-purple);
           background-color: var(--amethyst);
+          font-family: Helvetica;
+          font-size: 10px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
         `;
     }
   }}
