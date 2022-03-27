@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 import Header from "components/Header";
 import LastSeasonBadge from "components/LastSeasonBadge";
 
@@ -10,6 +10,7 @@ import Match from "Match";
 
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "actions";
+import classNames from "classnames";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
       appState: state.app,
     };
   });
+  const { mostInfo } = appState;
 
   useEffect(() => {
     dispatch({
@@ -33,6 +35,15 @@ function App() {
       },
     });
   }, []);
+
+  const setMostSelectedIndex = (i) => {
+    dispatch({
+      type: actions.DEFAULT_ASSIGN,
+      data: {
+        mostSelectedIndex: i,
+      },
+    });
+  };
 
   return (
     <div className="App">
@@ -57,79 +68,77 @@ function App() {
             <SoloTier></SoloTier>
             <FreeTier></FreeTier>
             <WinRate>
-              <WinRateHeader>
-                <div className="active">챔피언 승률</div>
-                <div className="non-active">7일간 랭크 승률</div>
+              <WinRateHeader mostSelectedIndex={appState.mostSelectedIndex}>
+                <div
+                  className={classNames(
+                    { active: appState.mostSelectedIndex === 0 },
+                    { "non-active": appState.mostSelectedIndex === 1 }
+                  )}
+                  onClick={() => {
+                    setMostSelectedIndex(0);
+                  }}
+                >
+                  챔피언 승률
+                </div>
+                <div
+                  className={classNames(
+                    { active: appState.mostSelectedIndex === 1 },
+                    { "non-active": appState.mostSelectedIndex === 0 }
+                  )}
+                  onClick={() => {
+                    setMostSelectedIndex(1);
+                  }}
+                >
+                  7일간 랭크 승률
+                </div>
               </WinRateHeader>
               <WinRateBody>
-                <WinRateChampion>
-                  <div>
-                    <img />
-                  </div>
-                  <div>
-                    <p className="top-text">신지드</p>
-                    <p className="bottom-text">CS 67.8 (2.4)</p>
-                  </div>
-                  <div>
-                    <p className="top-text">2.47:1 평점</p>
-                    <p className="bottom-text">4.3 / 6.1 / 10.7</p>
-                  </div>
-                  <div>
-                    <p className="top-text">69%</p>
-                    <p className="bottom-text">35게임</p>
-                  </div>
-                </WinRateChampion>
-                <WinRateChampion>
-                  <div>
-                    <img />
-                  </div>
-                  <div>
-                    <p className="top-text">신지드</p>
-                    <p className="bottom-text">CS 67.8 (2.4)</p>
-                  </div>
-                  <div>
-                    <p className="top-text">2.47:1 평점</p>
-                    <p className="bottom-text">4.3 / 6.1 / 10.7</p>
-                  </div>
-                  <div>
-                    <p className="top-text">69%</p>
-                    <p className="bottom-text">35게임</p>
-                  </div>
-                </WinRateChampion>
-                <WinRateChampion>
-                  <div>
-                    <img />
-                  </div>
-                  <div>
-                    <p className="top-text">신지드</p>
-                    <p className="bottom-text">CS 67.8 (2.4)</p>
-                  </div>
-                  <div>
-                    <p className="top-text">2.47:1 평점</p>
-                    <p className="bottom-text">4.3 / 6.1 / 10.7</p>
-                  </div>
-                  <div>
-                    <p className="top-text">69%</p>
-                    <p className="bottom-text">35게임</p>
-                  </div>
-                </WinRateChampion>
-                <WinRateChampion>
-                  <div>
-                    <img />
-                  </div>
-                  <div>
-                    <p className="top-text">신지드</p>
-                    <p className="bottom-text">CS 67.8 (2.4)</p>
-                  </div>
-                  <div>
-                    <p className="top-text">2.47:1 평점</p>
-                    <p className="bottom-text">4.3 / 6.1 / 10.7</p>
-                  </div>
-                  <div>
-                    <p className="top-text">69%</p>
-                    <p className="bottom-text">35게임</p>
-                  </div>
-                </WinRateChampion>
+                {appState.mostSelectedIndex === 0 &&
+                  mostInfo.champions.map((item, index) => {
+                    return (
+                      <WinRateChampion key={index}>
+                        <div>
+                          <img src={item.imageUrl} />
+                        </div>
+                        <div>
+                          <p className="top-text">{item.name}</p>
+                          <p className="bottom-text">CS {item.cs} (2.4)</p>
+                        </div>
+                        <div>
+                          <p className="top-text">2.47:1 평점</p>
+                          <p className="bottom-text">
+                            {item.kills} / {item.deaths} / {item.assists}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="top-text">
+                            {Math.ceil((item.wins / item.games) * 100)}%
+                          </p>
+                          <p className="bottom-text">{item.games}게임</p>
+                        </div>
+                      </WinRateChampion>
+                    );
+                  })}
+                {appState.mostSelectedIndex === 1 &&
+                  mostInfo.recentWinRate.map((item, index) => {
+                    return (
+                      <WinRateWeek key={index}>
+                        <div>
+                          <div>
+                            <img src={item.imageUrl} />
+                          </div>
+                          <span>{item.name}</span>
+                        </div>
+                        <div>
+                          {/* rechart */}
+                          <div>69%</div>
+                          <div>
+                            <Graph></Graph>
+                          </div>
+                        </div>
+                      </WinRateWeek>
+                    );
+                  })}
               </WinRateBody>
             </WinRate>
           </LeftSide>
@@ -209,9 +218,21 @@ const WinRateHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     &.active {
-      border-right: solid 1px var(--silver-three);
+      ${(props) => {
+        if (props.mostSelectedIndex === 0) {
+          return css`
+            border-right: solid 1px var(--silver-three);
+          `;
+        } else {
+          return css`
+            border-left: solid 1px var(--silver-three);
+          `;
+        }
+      }}
+
       background-color: initial;
       font-family: AppleSDGothicNeo;
       font-size: 12px;
@@ -276,6 +297,7 @@ const WinRateChampion = styled.div`
       min-width: 45px;
       background-color: lime;
       border-radius: 45px;
+      overflow: hidden;
     }
     &:nth-of-type(2) {
       width: 85px;
@@ -303,6 +325,69 @@ const WinRateChampion = styled.div`
     }
   }
 `;
-const WinRateWeek = styled.div``;
+const WinRateWeek = styled.div`
+  padding-left: 15px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--silver-three);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > div {
+    &:nth-of-type(1) {
+      display: flex;
+      align-items: center;
+      & > div {
+        width: 32px;
+        height: 32px;
+        border-radius: 45px;
+        overflow: hidden;
+        & > img {
+          width: 32px;
+        }
+      }
+
+      & > span {
+        font-family: AppleSDGothicNeo;
+        font-size: 13px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: var(--brownish-grey);
+        padding-left: 10px;
+      }
+    }
+    &:nth-of-type(2) {
+      display: flex;
+      align-items: center;
+
+      & > div {
+        &:nth-of-type(1) {
+          font-family: Helvetica;
+          font-size: 13px;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: center;
+          color: var(--cool-grey);
+          padding-right: 12px;
+        }
+        &:nth-of-type(2) {
+        }
+      }
+    }
+  }
+`;
+const Graph = styled.div`
+  width: 123px;
+  height: 24px;
+  background-color: red;
+`;
 
 export default App;

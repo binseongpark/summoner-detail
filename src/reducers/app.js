@@ -14,7 +14,8 @@ const initialState = {
     champions: [],
     positions: [],
     summary: []
-  }
+  },
+  mostSelectedIndex: 0
 };
 
 export default (state = initialState, action) => {

@@ -5,16 +5,16 @@ import Badge from "components/Badge";
 export default function Match({ game = {} }) {
   const getItem = (items, index) => {
     if (items.length === index + 1) {
-      return <div></div>;
+      return <div key={index}></div>;
     }
     if (items.length > 0 && items.length > index) {
       return (
-        <div>
+        <div key={index}>
           <img width={"100%"} src={items[index].imageUrl} />
         </div>
       );
     } else {
-      return <div></div>;
+      return <div key={index}></div>;
     }
   };
 
