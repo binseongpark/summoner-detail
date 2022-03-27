@@ -8,18 +8,35 @@ export const test = {
   },
   //
   getMatches: ({ summonerName }) => {
-    return request(`https://codingtest.op.gg/api/summoner/${summonerName}/matches`, {
-      method: "GET",
-    });
+    return request(
+      `https://codingtest.op.gg/api/summoner/${summonerName}/matches`,
+      {
+        method: "GET",
+      }
+    );
+  },
+  getMatchDetail: ({ summonerName, gameId }) => {
+    return request(
+      `https://codingtest.op.gg/api/summoner/${summonerName}/matchDetail/${gameId}`,
+      {
+        method: "GET",
+      }
+    );
   },
   getMostInfo: ({ summonerName }) => {
-    return request(`https://codingtest.op.gg/api/summoner/${summonerName}/mostInfo`, {
-      method: "GET",
-    });
+    return request(
+      `https://codingtest.op.gg/api/summoner/${summonerName}/mostInfo`,
+      {
+        method: "GET",
+      }
+    );
   },
   getItem: () => {
-    return request(`http://ddragon.leagueoflegends.com/cdn/10.15.1/data/ko_KR/item.json`, {
-      method: "GET",
-    });
+    return request(
+      `http://ddragon.leagueoflegends.com/cdn/10.15.1/data/ko_KR/item.json`,
+      {
+        method: "GET",
+      }
+    );
   },
 };

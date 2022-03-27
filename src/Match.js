@@ -12,7 +12,8 @@ export default function Match({ game = {} }) {
           <span>하루전</span>
         </div>
         <div>{game.isWin ? "승리" : "패배"}</div>
-        <div>15분 53초</div>
+        {/* <div>15분 53초</div> */}
+        <div>{game.gameLength}</div>
       </InfoContainer>
       <ChampionContainer>
         <div>
@@ -51,7 +52,8 @@ export default function Match({ game = {} }) {
         </div>
         <div>
           <span>
-            1.50:1<span> 평점</span>
+            {game.stats.general.kdaString}
+            <span> 평점</span>
           </span>
         </div>
         <div>
@@ -59,7 +61,7 @@ export default function Match({ game = {} }) {
             if (index === 0) {
               if (game.stats.general.largestMultiKillString !== "")
                 return (
-                  <Badge status={game.stats.general.largestMultiKillString}>
+                  <Badge key={index} status={game.stats.general.largestMultiKillString}>
                     {game.stats.general.largestMultiKillString}
                   </Badge>
                 );
@@ -69,7 +71,7 @@ export default function Match({ game = {} }) {
                 game.stats.general.opScoreBadge !== ""
               ) {
                 return (
-                  <Badge status={game.stats.general.opScoreBadge}>
+                  <Badge key={index} status={game.stats.general.opScoreBadge}>
                     {game.stats.general.opScoreBadge}
                   </Badge>
                 );
@@ -79,28 +81,35 @@ export default function Match({ game = {} }) {
         </div>
       </KdaContainer>
       <StatsContainer>
-        <div>레벨8</div>
+        <div>레벨{game.champion.level}</div>
         <div>
           {game.stats.general.cs} ({game.stats.general.csPerMin}) CS
         </div>
-        <div>킬관여 38%</div>
+        <div>킬관여 {game.stats.general.contributionForKillRate}</div>
       </StatsContainer>
-      <ItemsContainer>
+      <ItemsContainer isWin={game.isWin}>
         <div>
           <div></div>
           <div></div>
           <div></div>
-          <div></div>
+          <div>
+            {Array.isArray(game.items) &&
+            game.items.length > 0 ? (
+              <img width={'100%'} src={game.items[game.items.length - 1].imageUrl} />
+            ) : null}
+          </div>
         </div>
         <div>
           <div></div>
           <div></div>
           <div></div>
-          <div></div>
+          <div>
+            <img width={'100%'} src={game.isWin ? '/images/icon-buildblue-p.png' : '/images/icon-buildred-p.png'} />
+          </div>
         </div>
         <div>
-          <img src="images/icon-ward-red.svg" />
-          <span>제어 와드 1</span>
+          <img src={game.isWin ? 'images/icon-ward-blue.svg' : 'images/icon-ward-red.svg'} />
+          <span>제어 와드 {game.stats.ward.visionWardsBought}</span>
         </div>
       </ItemsContainer>
       <ParticipantsContainer>
@@ -409,7 +418,8 @@ const ItemsContainer = styled.div`
       display: flex;
       justify-content: center;
       & > div {
-        background-color: lime;
+        background-color: ${(props) =>
+          props.isWin ? "var(--greyblue)" : "var(--pinkish-grey-four)"};
         width: 22px;
         height: 22px;
         border-radius: 2px;
@@ -424,7 +434,8 @@ const ItemsContainer = styled.div`
       margin-top: 2px;
       justify-content: center;
       & > div {
-        background-color: red;
+        background-color: ${(props) =>
+          props.isWin ? "var(--greyblue)" : "var(--pinkish-grey-four)"};
         width: 22px;
         height: 22px;
         border-radius: 2px;

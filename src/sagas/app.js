@@ -42,6 +42,13 @@ export function* getSummonerRequestFlow(payload) {
       matches: res,
     };
 
+    for (let i = 0; i < o.matches.games.length; i++) {
+      let gameId = o.matches.games[i].gameId;
+      res = yield call(api.test.getMatchDetail, { summonerName, gameId });
+
+      o.matches.games[i].teams = res.teams;
+    }
+
     const app = yield select((state) => state.app);
     console.log("@@@@ app: ", app);
 

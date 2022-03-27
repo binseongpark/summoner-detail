@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
-export default function LastSeasonBadge() {
+export default function LastSeasonBadge({ tier }) {
   return <Wrapper>
-    <span className="Text-Style-5">S3<span className="Text-Style-6"> Bronze</span></span>
+    <span className="Text-Style-5">{tier.shortString}<span className="Text-Style-6"> {tier.tier}</span></span>
   </Wrapper>;
 }
 
 const Wrapper = styled.div`
   display: inline-block;
-  width: 58px;
+  padding-left: 5px;
+  padding-right: 5px;
   height: 20px;
   border-radius: 2px;
   border: solid 1px var(--silver-two);
